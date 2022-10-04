@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AddressBook, AddressDetails, ContactDetails } from '../class/addresss-book/address-book';
+import { AddressBook, AddressDetails, ContactDetails } from '../class/address-book/address-book';
 import { AddressBookService } from '../services/address-book/address-book.service';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
