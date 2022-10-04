@@ -1,0 +1,102 @@
+<p>address-book works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor = "let addressBook of addressBookList">
+            <td>
+                {{addressBook.firstName}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="btn btn-lg btn-outline-primary" (click)="openAddAddressModal(content)">Add New</button>
+
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add New Address</h4>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')">Close</button>
+    </div>
+    <div class="modal-body">
+        <form (ngSubmit) = "onSubmit()" id="addAddressBookListForm">
+            <div class="form-group">
+                <input type="text" name="firstName" class ="form-control" [(ngModel)] = "addressBook.firstName" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <input type="text" name="lastName" class ="form-control" [(ngModel)] = "addressBook.lastName" placeholder="Last Name">
+            </div>
+        
+            <div class="form-group">
+                <input type="text" name="nickName" class ="form-control" [(ngModel)] = "addressBook.nickName" placeholder="Nick Name">
+            </div>
+            
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-text">Contact Number</span>
+                    <input type="text" name="mobileNumber" class ="form-control" [(ngModel)] = "mobileNumber.value" placeholder="Mobile Number">
+                    <input type="text" name="alternateMobileNumber" class ="form-control" [(ngModel)] = "alternateMobileNumber.value" placeholder="Alternate Mobile Number">
+                </div>
+                <div class="input-group mt-1">
+                    <input type="text" name="email" class ="form-control" [(ngModel)] = "email.value" placeholder="E-mail Address">
+                </div>
+            </div>
+        
+            
+        
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-text">Home Address</span>
+                    <input type="text" name="homeAddressLineOne" class ="form-control" [(ngModel)] = "homeAddress.lineOne" placeholder="Address Line 1">
+                    <input type="text" name="homeAddressLineTwo" class ="form-control" [(ngModel)] = "homeAddress.lineTwo" placeholder="Address Line 2">
+                </div>
+                <div class="input-group mt-1">
+                    <input type="text" name="homeAddressCity" class ="form-control" [(ngModel)] = "homeAddress.city" placeholder="City">
+                    <input type="text" name="homeAddressZipCode" class ="form-control" [(ngModel)] = "homeAddress.zipcode" placeholder="Zip Code">
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-text">Work Address</span>
+                    <input type="text" name="workAddressLineOne" class ="form-control" [(ngModel)] = "workAddress.lineOne" placeholder="Address Line 1">
+                    <input type="text" name="workAddressLineTwo" class ="form-control" [(ngModel)] = "workAddress.lineTwo" placeholder="Address Line 2">
+                </div>
+                <div class="input-group mt-1">
+                    <input type="text" name="workAddressCity" class ="form-control" [(ngModel)] = "workAddress.city" placeholder="City">
+                    <input type="text" name="workAddressZipCode" class ="form-control" [(ngModel)] = "workAddress.zipcode" placeholder="Zip Code">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" name="organization" class ="form-control" [(ngModel)] = "addressBook.organization" placeholder="Organization">
+            </div>
+            <div class="form-group">
+                <input type="date" name="dateOfBirth" class ="form-control" [(ngModel)] = "addressBook.dateOfBirth" placeholder="Date of Birth" >
+            </div>
+            <div class="form-group">
+                <input type="text" name="relationship" class ="form-control" [(ngModel)] = "addressBook.relationship" placeholder="Relationship">
+            </div>
+            <div class="form-group">
+                <input type="text" name="webLink" class ="form-control" [(ngModel)] = "addressBook.weblink" placeholder="Web Link">
+            </div>
+            <div class="form-group">
+                <input type="text" name="label" class ="form-control" [(ngModel)] = "addressBook.label" placeholder="Label">
+            </div>
+            <div class="form-group">
+                <input type="text" name="notes" class ="form-control" [(ngModel)] = "addressBook.notes" placeholder="Notes">
+            </div>
+        
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class = "btn btn-success" type ="submit" form="addAddressBookListForm">Add</button>
+    </div>
+  </ng-template>  
