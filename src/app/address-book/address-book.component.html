@@ -1,102 +1,198 @@
-<p>address-book works!</p>
-<table>
+<table class="table table-striped text-center" aria-label="Address Book Table">
     <thead>
         <tr>
-            <th>
+            <th id="adb-list-serial">
+                #
+            </th>
+            <th id="adb-list-name">
                 Name
+            </th>
+            <th id="adb-list-contact">
+                Contact
+            </th>
+            <th id="adb-list-action">
+                Action
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor = "let addressBook of addressBookList">
+        <tr *ngFor = "let addressBook of addressBookList; index as i">
+            <th scope="row">{{ i + 1 }}</th>
             <td>
                 {{addressBook.firstName}}
+            </td>
+            <td>
+                <em class="bi bi-telephone-fill me-2"></em> {{addressBook.contactDetails[0].value}} 
+            </td>
+            <td class="text-end">
+                <button class="btn btn-sm btn-primary me-1" (click)="openAddressBookByIdModal(addressBook, viewModal)"><em class="bi bi-binoculars-fill"></em></button>
+                <button class="btn btn-sm btn-warning me-1" (click)="openAddAddressModal(addressBook, content, 'update')"><em class="bi bi-pencil-fill"></em></button>
+                <button class="btn btn-sm btn-danger" (click)="deleteAddressBookConfirmation(addressBook, deleteModal)"><em class="bi bi-trash3-fill"></em></button>
             </td>
         </tr>
     </tbody>
 </table>
 
-<button class="btn btn-lg btn-outline-primary" (click)="openAddAddressModal(content)">Add New</button>
+<button class="btn btn-primary" (click)="openAddAddressModal(addressBook, content, 'add')">Add New</button>
 
-
-
-
+<!-- Modals -->
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add New Address</h4>
-      <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')">Close</button>
+        <h4 class="modal-title" id="modal-basic-title">
+            <span *ngIf="formType=='add'">Add New Address</span>
+            <span *ngIf="formType=='update'">Update</span> 
+        </h4>
+        <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')"><em class="bi bi-x-lg"></em></button>
     </div>
     <div class="modal-body">
-        <form (ngSubmit) = "onSubmit()" id="addAddressBookListForm">
-            <div class="form-group">
-                <input type="text" name="firstName" class ="form-control" [(ngModel)] = "addressBook.firstName" placeholder="First Name">
+        <form (ngSubmit) = "onSubmit()" id="addAddressBookListForm" ngNativeValidate>
+            <div class="form-group mb-2">
+                <input type="text" name="firstName" class ="form-control" [(ngModel)] = "addressBook.firstName" placeholder="First Name *" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="lastName" class ="form-control" [(ngModel)] = "addressBook.lastName" placeholder="Last Name">
             </div>
-        
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="nickName" class ="form-control" [(ngModel)] = "addressBook.nickName" placeholder="Nick Name">
             </div>
-            
-            <div class="form-group">
-                <div class="input-group">
+            <div class="form-group mb-2">
+                <div class="input-group mb-2">
                     <span class="input-group-text">Contact Number</span>
-                    <input type="text" name="mobileNumber" class ="form-control" [(ngModel)] = "mobileNumber.value" placeholder="Mobile Number">
+                    <input type="text" name="mobileNumber" class ="form-control" [(ngModel)] = "mobileNumber.value" placeholder="Mobile Number *" required>
                     <input type="text" name="alternateMobileNumber" class ="form-control" [(ngModel)] = "alternateMobileNumber.value" placeholder="Alternate Mobile Number">
                 </div>
-                <div class="input-group mt-1">
+                <div class="input-group">
                     <input type="text" name="email" class ="form-control" [(ngModel)] = "email.value" placeholder="E-mail Address">
                 </div>
             </div>
-        
-            
-        
-            <div class="form-group">
-                <div class="input-group">
+            <div class="form-group mb-2">
+                <div class="input-group mb-1">
                     <span class="input-group-text">Home Address</span>
                     <input type="text" name="homeAddressLineOne" class ="form-control" [(ngModel)] = "homeAddress.lineOne" placeholder="Address Line 1">
                     <input type="text" name="homeAddressLineTwo" class ="form-control" [(ngModel)] = "homeAddress.lineTwo" placeholder="Address Line 2">
                 </div>
-                <div class="input-group mt-1">
+                <div class="input-group">
                     <input type="text" name="homeAddressCity" class ="form-control" [(ngModel)] = "homeAddress.city" placeholder="City">
                     <input type="text" name="homeAddressZipCode" class ="form-control" [(ngModel)] = "homeAddress.zipcode" placeholder="Zip Code">
                 </div>
             </div>
-        
-            <div class="form-group">
-                <div class="input-group">
+            <div class="form-group mb-2">
+                <div class="input-group mb-1">
                     <span class="input-group-text">Work Address</span>
                     <input type="text" name="workAddressLineOne" class ="form-control" [(ngModel)] = "workAddress.lineOne" placeholder="Address Line 1">
                     <input type="text" name="workAddressLineTwo" class ="form-control" [(ngModel)] = "workAddress.lineTwo" placeholder="Address Line 2">
                 </div>
-                <div class="input-group mt-1">
+                <div class="input-group">
                     <input type="text" name="workAddressCity" class ="form-control" [(ngModel)] = "workAddress.city" placeholder="City">
                     <input type="text" name="workAddressZipCode" class ="form-control" [(ngModel)] = "workAddress.zipcode" placeholder="Zip Code">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="organization" class ="form-control" [(ngModel)] = "addressBook.organization" placeholder="Organization">
             </div>
-            <div class="form-group">
-                <input type="date" name="dateOfBirth" class ="form-control" [(ngModel)] = "addressBook.dateOfBirth" placeholder="Date of Birth" >
+            <div class="form-group mb-2">
+                <div class="input-group">
+                    <span class="input-group-text">Date of Birth</span>
+                    <input type="date" name="dateOfBirth" class ="form-control" [(ngModel)] = "addressBook.dateOfBirth" placeholder="Date of Birth" >
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="relationship" class ="form-control" [(ngModel)] = "addressBook.relationship" placeholder="Relationship">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="webLink" class ="form-control" [(ngModel)] = "addressBook.weblink" placeholder="Web Link">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="label" class ="form-control" [(ngModel)] = "addressBook.label" placeholder="Label">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <input type="text" name="notes" class ="form-control" [(ngModel)] = "addressBook.notes" placeholder="Notes">
             </div>
-        
         </form>
     </div>
     <div class="modal-footer">
-        <button class = "btn btn-success" type ="submit" form="addAddressBookListForm">Add</button>
+        <button class = "btn btn-success" type ="submit" form="addAddressBookListForm">Submit</button>
     </div>
-  </ng-template>  
+</ng-template>  
+
+<ng-template #deleteModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="delete-modal">Delete ?</h4>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')"><em class="bi bi-x-lg"></em></button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-success" (click)="c('Ok click')">OK</button>
+    </div>
+</ng-template>
+
+<ng-template #viewModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="delete-modal"> {{addressBookById.firstName}}</h4>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')"><em class="bi bi-x-lg"></em></button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-borderless" aria-label="Address Book By Id Table">
+            <tr *ngIf="addressBookById.firstName!=null">
+                <th>First Name</th><td>{{addressBookById.firstName}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.lastName!=null">
+                <th>Last Name</th><td>{{addressBookById.lastName}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.nickName!=null">
+                <th>Nick Name</th><td>{{addressBookById.nickName}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.contactDetails[0].value!=null">
+                <th>Mobile</th><td>{{addressBookById.contactDetails[0].value}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.contactDetails[1].value!=null">
+                <th>Alternate Mobile</th><td>{{addressBookById.contactDetails[1].value}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.contactDetails[2].value!=null">
+                <th>Email</th><td>{{addressBookById.contactDetails[2].value}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.addressDetails[0].city!=null">
+                <th class="align-top">Home Address</th>
+                <td>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[0].lineOne!=null">{{addressBookById.addressDetails[0].lineOne}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[0].lineTwo!=null">{{addressBookById.addressDetails[0].lineTwo}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[0].city!=null">{{addressBookById.addressDetails[0].city}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[0].zipcode!=null">{{addressBookById.addressDetails[0].zipcode}}</span>
+                </td>
+                <br>
+            </tr>
+            <tr *ngIf="addressBookById.addressDetails[1].city!=null">
+                <th class="align-top">Work Address</th>
+                <td>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[1].lineOne!=null">{{addressBookById.addressDetails[1].lineOne}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[1].lineTwo!=null">{{addressBookById.addressDetails[1].lineTwo}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[1].city!=null">{{addressBookById.addressDetails[1].city}}<br></span>
+                    <span class="margin-left-minus-4" *ngIf="addressBookById.addressDetails[1].zipcode!=null">{{addressBookById.addressDetails[1].zipcode}}</span>
+                </td>
+            </tr>
+            <tr *ngIf="addressBookById.organization">
+                <th>Organization</th><td>{{addressBookById.organization}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.dateOfBirth">
+                <th>Date of Birth</th><td>{{addressBookById.dateOfBirth}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.relationship">
+                <th>Relationship</th><td>{{addressBookById.relationship}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.weblink">
+                <th>Web Link</th><td>{{addressBookById.weblink}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.label">
+                <th>Label</th><td>{{addressBookById.label}}</td>
+            </tr>
+            <tr *ngIf="addressBookById.notes">
+                <th>Notes</th><td>{{addressBookById.notes}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-success" (click)="c('Ok click')">OK</button>
+    </div>
+</ng-template>

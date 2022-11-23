@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AddressBook, AddressDetails, ContactDetails } from '../class/address-book/address-book';
 import { AddressBookService } from '../services/address-book/address-book.service';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -13,15 +12,16 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 export class AddressBookComponent implements OnInit {
 
   addressBookList: AddressBook[];
+  addressBookById: AddressBook;
   addressBook: AddressBook = new AddressBook();
   homeAddress: AddressDetails = new AddressDetails();
   workAddress: AddressDetails = new AddressDetails();
   mobileNumber: ContactDetails = new ContactDetails();
   alternateMobileNumber: ContactDetails = new ContactDetails();
   email: ContactDetails = new ContactDetails();
+  formType: string;
 
   constructor(private addressBookService: AddressBookService,
-    private router: Router,
     modalConfig: NgbModalConfig,
     private modalService: NgbModal) {
       modalConfig.backdrop = 'static';
@@ -39,28 +39,31 @@ export class AddressBookComponent implements OnInit {
   }
 
   onSubmit(){
-    this.addressBook.addressDetails.push(this.homeAddress);
-    this.addressBook.addressDetails.push(this.workAddress);
-    this.addressBook.contactDetails.push(this.mobileNumber);
-    this.addressBook.contactDetails.push(this.alternateMobileNumber);
-    this.addressBook.contactDetails.push(this.email);
-    {
-      this.homeAddress.label = "Home Address";
-      this.workAddress.label = "Work Address";
+    if(this.formType == 'add'){
+      this.addressBook.addressDetails.push(this.homeAddress);
+      this.addressBook.addressDetails.push(this.workAddress);
+      this.addressBook.contactDetails.push(this.mobileNumber);
+      this.addressBook.contactDetails.push(this.alternateMobileNumber);
+      this.addressBook.contactDetails.push(this.email);
+      {
+        this.homeAddress.label = "Home Address";
+        this.workAddress.label = "Work Address";
+      }
+      {
+        this.mobileNumber.type = "Mobile Number";
+        this.mobileNumber.isMainContact = true;
+        this.mobileNumber.label = "Personal";
+        this.alternateMobileNumber.type = "Mobile Number";
+        this.alternateMobileNumber.label = "Alternate";
+        this.alternateMobileNumber.isMainContact = false;
+        this.email.type = "E-mail";
+        this.email.isMainContact = false;
+      }
+      this.addAddressBook();
     }
-    {
-      this.mobileNumber.type = "Mobile Number";
-      this.mobileNumber.isMainContact = true;
-      this.mobileNumber.label = "Personal";
-      this.alternateMobileNumber.type = "Mobile Number";
-      this.alternateMobileNumber.label = "Alternate";
-      this.alternateMobileNumber.isMainContact = false;
-      this.email.type = "E-mail";
-      this.email.isMainContact = false;
-    }
-    
-    console.log(this.addressBook);
-    this.addAddressBook();
+    else if(this.formType == 'update'){
+      this.updateAddressBook();
+    }    
   }
 
   addAddressBook(){
@@ -70,8 +73,51 @@ export class AddressBookComponent implements OnInit {
     })
   }
 
-  openAddAddressModal(content: any) {
+  openAddAddressModal(addressBook: AddressBook, content: any, type: string) {
+    if(type == 'update'){
+      this.formType = 'update';
+      this.addressBook = addressBook;
+      this.homeAddress = addressBook.addressDetails[0];
+      this.workAddress = addressBook.addressDetails[1];
+      this.mobileNumber = addressBook.contactDetails[0];
+      this.alternateMobileNumber = addressBook.contactDetails[1];
+      this.email = addressBook.contactDetails[2];
+    }
+    else if(type == 'add'){
+      this.formType = 'add';
+      this.addressBook = new AddressBook();
+      this.homeAddress = new AddressDetails();
+      this.workAddress = new AddressDetails();
+      this.mobileNumber = new ContactDetails();
+      this.alternateMobileNumber = new ContactDetails();
+      this.email = new ContactDetails();
+    }
     this.modalService.open(content);
   }
 
+  deleteAddressBookConfirmation(addressBook: any, deleteModal: any){
+    this.modalService.open(deleteModal).result.then((result) =>{
+      this.deleteAddressBook(addressBook);
+    })
+  }
+
+  deleteAddressBook(addressBookToDelete:any){
+    this.addressBookService.deleteAddressBook(addressBookToDelete).subscribe((data: any) =>{
+      this.ngOnInit();
+    })
+  }
+
+  openAddressBookByIdModal(addressBook: AddressBook, openAddressBookByIdModal: any){
+    this.addressBookService.getAddressBookById(addressBook.addressBookId).subscribe(data=>{
+      this.addressBookById = data;
+      this.modalService.open(openAddressBookByIdModal);
+    })
+  }
+
+  updateAddressBook(){
+    this.addressBookService.updateAddressBook(this.addressBook).subscribe(data =>{
+      this.modalService.dismissAll();
+      this.ngOnInit();
+    })
+  }
 }
