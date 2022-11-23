@@ -65,13 +65,9 @@ export class AddressBookComponent implements OnInit {
 
   addAddressBook(){
     this.addressBookService.addAddressBook(this.addressBook).subscribe(data =>{
-      this.goToAddressBookList();
+      this.modalService.dismissAll();
+      this.ngOnInit();
     })
-  }
-
-  goToAddressBookList(){
-    this.router.navigate(['/address-book']);
-    window.location.reload(); //The above routing is not working within the same component, so have to refresh.
   }
 
   openAddAddressModal(content: any) {

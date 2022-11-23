@@ -7,7 +7,7 @@ import { AddressBook } from '../../class/address-book/address-book';
   providedIn: 'root'
 })
 export class AddressBookService {
-  private baseURL = "http://localhost:8080/address-book";
+  private baseURL = "http://localhost:8080/public/api/address-book";
   constructor(private httpClient: HttpClient) { }
 
   getAddressBookList() : Observable<AddressBook[]>{
