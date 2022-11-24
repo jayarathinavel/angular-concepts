@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AddressBook, AddressDetails, ContactDetails } from '../class/address-book/address-book';
 import { AddressBookService } from '../services/address-book/address-book.service';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'address-book',
@@ -21,9 +22,12 @@ export class AddressBookComponent implements OnInit {
   email: ContactDetails = new ContactDetails();
   formType: string;
 
-  constructor(private addressBookService: AddressBookService,
+  constructor(
+    private addressBookService: AddressBookService,
     modalConfig: NgbModalConfig,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toastService: HotToastService
+    ) {
       modalConfig.backdrop = 'static';
       modalConfig.keyboard = false;
     }
@@ -70,6 +74,7 @@ export class AddressBookComponent implements OnInit {
     this.addressBookService.addAddressBook(this.addressBook).subscribe(data =>{
       this.modalService.dismissAll();
       this.ngOnInit();
+      this.toastService.success('Added');
     })
   }
 
@@ -104,6 +109,7 @@ export class AddressBookComponent implements OnInit {
   deleteAddressBook(addressBookToDelete:any){
     this.addressBookService.deleteAddressBook(addressBookToDelete).subscribe((data: any) =>{
       this.ngOnInit();
+      this.toastService.success('Deleted');
     })
   }
 
@@ -118,6 +124,7 @@ export class AddressBookComponent implements OnInit {
     this.addressBookService.updateAddressBook(this.addressBook).subscribe(data =>{
       this.modalService.dismissAll();
       this.ngOnInit();
+      this.toastService.success('Updated');
     })
   }
 }
