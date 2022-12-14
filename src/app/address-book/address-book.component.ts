@@ -3,6 +3,8 @@ import { AddressBook, AddressDetails, ContactDetails } from '../class/address-bo
 import { AddressBookService } from '../services/address-book/address-book.service';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { tap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'address-book',
@@ -37,8 +39,19 @@ export class AddressBookComponent implements OnInit {
   }
 
   private getAddressBookList(){
-    this.addressBookService.getAddressBookList().subscribe(data => {
+    this.toastService.loading('Loading, Please wait', {
+      id: 'loading'
+    })
+    this.addressBookService.getAddressBookList().pipe(
+      tap({
+        error: (error: HttpErrorResponse|Error) => {
+          this.toastService.error('Error occurred : ' + error.name);
+          this.toastService.close('loading');
+        } 
+      })
+    ).subscribe(data => {
       this.addressBookList = data;
+      this.toastService.close('loading');
     });
   }
 
@@ -71,7 +84,18 @@ export class AddressBookComponent implements OnInit {
   }
 
   addAddressBook(){
-    this.addressBookService.addAddressBook(this.addressBook).subscribe(data =>{
+    this.toastService.loading('Adding, Please wait', {
+      id: 'adding'
+    })
+    this.addressBookService.addAddressBook(this.addressBook).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('adding');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe(data =>{
+      this.toastService.close('adding');
       this.modalService.dismissAll();
       this.ngOnInit();
       this.toastService.success('Added');
@@ -107,7 +131,18 @@ export class AddressBookComponent implements OnInit {
   }
 
   deleteAddressBook(addressBookToDelete:any){
-    this.addressBookService.deleteAddressBook(addressBookToDelete).subscribe((data: any) =>{
+    this.toastService.loading('Deleting, Please wait', {
+      id: 'deleting'
+    })
+    this.addressBookService.deleteAddressBook(addressBookToDelete).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('deleting');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe((data: any) =>{
+      this.toastService.close('deleting');
       this.ngOnInit();
       this.toastService.success('Deleted');
     })
@@ -121,7 +156,18 @@ export class AddressBookComponent implements OnInit {
   }
 
   updateAddressBook(){
-    this.addressBookService.updateAddressBook(this.addressBook).subscribe(data =>{
+    this.toastService.loading('Updating, Please wait', {
+      id: 'updating'
+    })
+    this.addressBookService.updateAddressBook(this.addressBook).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('updating');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe(data =>{
+      this.toastService.close('updating');
       this.modalService.dismissAll();
       this.ngOnInit();
       this.toastService.success('Updated');
