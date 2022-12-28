@@ -6,15 +6,26 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a routerLink="address-book" routerLinkActive="active" class="nav-link">Address Book</a>
+          <a href ="#" routerLink="address-book" routerLinkActive="active" class="nav-link">Address Book</a>
         </li>
       </ul>
+
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle btn btn-sm" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false"> Menu </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#" (click)="logout()" *ngIf="isLoggedIn()">Logout</a></li>
+            <li><a class="dropdown-item" href="#" routerLink="login" routerLinkActive="active" *ngIf="!isLoggedIn()">Login</a></li>
+          </ul>
+        </li>
+      </ul>
+
     </div>
   </div>
 </nav>
-
 <div class="container">
   <router-outlet></router-outlet>
 </div>

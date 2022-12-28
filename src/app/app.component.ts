@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +11,24 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-concepts';
-  constructor() {
-    // customize default values of modals used by this component tree
+  
+  constructor(
+    private router: Router,
+    private toastService: HotToastService
+    ) { }
+
+  logout(){
+    sessionStorage.clear();
+    this.router.navigateByUrl('');
+    this.toastService.info('You are logged out');
+  }
+
+  isLoggedIn(){
+    if (sessionStorage.getItem('token')) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }
