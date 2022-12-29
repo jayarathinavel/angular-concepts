@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -52,7 +53,8 @@ export class LoginComponent implements OnInit {
   }
 
   loginApi(): Observable<any>{
-    let url = 'http://localhost:8080/auth/login';
+    let apiURL = environment.apiURL;
+    let url = apiURL + '/auth/login';
     return this.http.post<any>(url, {
       username: this.loginModel.username,
       password: this.loginModel.password
@@ -79,7 +81,8 @@ export class LoginComponent implements OnInit {
   }
 
   registerApi(): Observable<any>{
-    let url = 'http://localhost:8080/auth/register';
+    let apiURL = environment.apiURL;
+    let url = apiURL + '/auth/register';
     return this.http.post<any>(url, {
       username: this.registerModel.username,
       password: this.registerModel.password

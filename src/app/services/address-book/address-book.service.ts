@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AddressBook } from '../../class/address-book/address-book';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressBookService {
-  private baseURL = "http://localhost:8080/public/api/address-book";
+  private apiURL = environment.apiURL;
+  private baseURL = this.apiURL + "/public/api/address-book";
   constructor(private httpClient: HttpClient) { }
 
   getAddressBookList() : Observable<AddressBook[]>{
