@@ -1,0 +1,85 @@
+<button class="btn btn-primary" (click)="openAddLendModal(addLendModal)">Add New</button>
+
+<ng-template #addLendModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+            Add New Lend
+        </h4>
+        <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')"><em
+                class="bi bi-x-lg"></em></button>
+    </div>
+    <div class="modal-body">
+        
+        <form (ngSubmit)="onAddLendSubmit()" id="addLend">
+
+            <div class="input-group mb-2">
+                <select class="form-select form-control" name="borrowerId" [(ngModel)]="lendList.borrowerId">
+                    <option [ngValue]="undefined" disabled selected hidden>Select Borrower</option>
+                    <option *ngFor="let borrower of borrowerList" [ngValue]="borrower.borrowerId">
+                        {{borrower.borrowerName}}
+                    </option>
+                </select>
+                <div *ngIf="lendList.borrowerId>0" class="input-group-append ms-1">
+                    <div *ngFor="let borrower of borrowerList">
+                        <button type="button" class="btn btn-warning" *ngIf="lendList.borrowerId == borrower.borrowerId" (click)="onEditBorrowerClick(borrower)">Edit Borrower</button>
+                    </div>
+                </div>
+                <div class="input-group-append ms-1">
+                    <button type="button" class="btn btn-primary" (click)="onAddBorrowerClick()">Add New
+                        Borrower</button>
+                </div>
+            </div>
+
+            <form (ngSubmit)="onAddBorrowerSubmit()" class="border border-secondary-subtle p-2 mb-2 rounded" id="addNewBorrower" *ngIf="showBorrowerForm">
+                <h6 *ngIf="!borrowerEditMode">
+                    Add New Borrower
+                </h6>
+                <h6 *ngIf="borrowerEditMode">
+                    Edit Borrower
+                </h6>
+                <div class="form-group mb-2">
+                    <input type="text" name="borrowerName" class="form-control"
+                        [(ngModel)]="borrowerInformation.borrowerName" placeholder="Borrower Name">
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" name="borrowerPhone" class="form-control"
+                        [(ngModel)]="borrowerInformation.phoneNumber" placeholder="Borrower Phone Number">
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" name="borrowerEmail" class="form-control" [(ngModel)]="borrowerInformation.email"
+                        placeholder="Borrower Email">
+                </div>
+                <input type="submit" form="addNewBorrower" class="btn btn-sm btn-primary me-1" value="Submit">
+                <input type="reset" class="btn btn-sm btn-danger me-1" value="Cancel" (click)="onAddBorrowerCancelOrDone()">
+                <button class="btn btn-sm btn-danger" *ngIf="borrowerEditMode" (click) = "deleteBorrower(borrowerInformation.borrowerId)">Delete Borrower</button>
+            </form>
+
+            <div class="form-group mb-2">
+                <input type="text" name="itemName" class="form-control" [(ngModel)]="lendList.itemName"
+                    placeholder="Item Name">
+            </div>
+            <div class="form-group mb-2">
+                <input type="text" name="itemDescription" class="form-control" [(ngModel)]="lendList.itemDescription"
+                    placeholder="Item Description">
+            </div>
+            <div class="form-group mb-2">
+                <input type="text" name="category" class="form-control" [(ngModel)]="lendList.category"
+                    placeholder="Category">
+            </div>
+            <div class="form-group mb-2">
+                <label for="lendDate">Lend Date</label>
+                <input type="date" name="lendDate" class="form-control" [(ngModel)]="lendList.lendDate"
+                    placeholder="Lend Date">
+            </div>
+            <div class="form-group mb-2">
+                <label for="dueDate">Due Date</label>
+                <input type="date" name="dueDate" class="form-control" [(ngModel)]="lendList.dueDate"
+                    placeholder="Due Date">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" *ngIf="!showBorrowerForm">
+        <button class="btn btn-danger" type="reset" form="addLend">Reset</button>
+        <button class="btn btn-success" type="submit" form="addLend">Submit</button>
+    </div>
+</ng-template>

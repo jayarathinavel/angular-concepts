@@ -11,13 +11,17 @@ import { FormsModule } from '@angular/forms';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { LoginComponent } from './login/login.component';
 import { RequestInterceptor } from './login/request.interceptor';
+import { LendListComponent } from './lend-tracker/lend-list/lend-list.component';
+import { WriteLendComponent } from './lend-tracker/write-lend/write-lend.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddressBookComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    LendListComponent,
+    WriteLendComponent
   ],
   imports: [
     BrowserModule,
