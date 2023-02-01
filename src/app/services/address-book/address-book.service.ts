@@ -9,7 +9,7 @@ import { AddressBook } from '../../class/address-book/address-book';
 })
 export class AddressBookService {
   private apiURL = environment.apiURL;
-  private baseURL = this.apiURL + "/public/api/address-book";
+  private baseURL = this.apiURL + "/api/address-book";
   constructor(private httpClient: HttpClient) { }
 
   getAddressBookList() : Observable<AddressBook[]>{

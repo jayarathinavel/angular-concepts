@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BorrowerInformation, LendList, Status } from 'src/app/class/lend-tracker/lend-list';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LendListService {
-
-  private baseURL = 'http://localhost:8080/public/api/lend-tracker';
+  private apiURL = environment.apiURL;
+  private baseURL = this.apiURL + "/api/lend-tracker";
 
   constructor(private httpClient: HttpClient) { }
 
