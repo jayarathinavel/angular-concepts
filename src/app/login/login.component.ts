@@ -11,7 +11,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  name = '!!!';
+  viewMode = 'tab1';
   loginModel: any = {};
   registerModel: any = {};
   sessionId: any = "";
@@ -36,18 +37,22 @@ export class LoginComponent implements OnInit {
     this.loginApi().pipe(tap({
       error: (error:HttpErrorResponse|Error) => {
         this.toastService.close('loggingIn');
-        this.toastService.error('Login Failed : ' + error.name);
+        this.toastService.error(error.name);
       }
     })).subscribe(res => {
-        if (res) {
+        if (res.message.type=="SUCCESS") {
           this.sessionId = res.sessionId;
           sessionStorage.setItem(
             'token',
             this.sessionId
           );
           this.toastService.close('loggingIn');
-          this.toastService.success("Login Success")
+          this.toastService.success(res.message.body)
           this.router.navigateByUrl(this.redirectURL);
+        }
+        else if (res.message.type=="ERROR") {
+          this.toastService.close('loggingIn');
+          this.toastService.error(res.message.body);
         }
     });
   }
@@ -66,16 +71,20 @@ export class LoginComponent implements OnInit {
     this.registerApi().pipe(tap({
       error: (error:HttpErrorResponse|Error) => {
         this.toastService.close('registering');
-        this.toastService.error('Registering Failed : ' + error.name);
+        this.toastService.error(error.name);
       }
     })).subscribe(res => {
-        if (res) {
+        if (res.type=="SUCCESS") {
+          this.loginModel.username = this.registerModel.username;
+          this.loginModel.password = this.registerModel.password;
           this.registerModel = "";
           this.toastService.close('registering');
-          this.toastService.success("Register Success <br> Username: "
-           + res.username + "<br> Password: "
-            + res.password + " <br> You can now Login", { duration: 10000 }
-          )
+          this.toastService.success(res.body);
+          this.login();
+        }
+        else if (res.type=="ERROR") {
+          this.toastService.close('registering');
+          this.toastService.error(res.body);
         }
     });
   }
