@@ -42,7 +42,7 @@
             <span *ngIf="formType=='add'">Add New Address</span>
             <span *ngIf="formType=='update'">Update</span> 
         </h4>
-        <button type="button" class="btn btn-danger" aria-label="Close" (click)="d('Cross click')"><em class="bi bi-x-lg"></em></button>
+        <button type="button" class="btn btn-danger" aria-label="Close" (click)="onAddEditModelCrossClick(d)"><em class="bi bi-x-lg"></em></button>
     </div>
     <div class="modal-body">
         <form (ngSubmit) = "onSubmit()" id="addAddressBookListForm" ngNativeValidate>

@@ -173,4 +173,9 @@ export class AddressBookComponent implements OnInit {
       this.toastService.success('Updated');
     })
   }
+
+  onAddEditModelCrossClick(d:any){
+    d('Cross click');
+    this.ngOnInit();
+  }
 }
