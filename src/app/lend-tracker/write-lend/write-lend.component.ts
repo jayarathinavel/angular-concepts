@@ -3,6 +3,9 @@ import { BorrowerInformation, LendList } from 'src/app/class/lend-tracker/lend-l
 import { LendListService } from 'src/app/services/lend-tracker/lend-list.service';
 import { LendListComponent } from '../lend-list/lend-list.component';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { HotToastService } from '@ngneat/hot-toast';
+import { tap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -25,6 +28,7 @@ export class WriteLendComponent implements OnInit {
     private lendListComponent: LendListComponent,
     modalConfig: NgbModalConfig,
     private modalService: NgbModal,
+    private toastService: HotToastService
   ) {
       modalConfig.backdrop = 'static';
       modalConfig.keyboard = false;
@@ -44,10 +48,22 @@ export class WriteLendComponent implements OnInit {
   }
 
   addLendList(){
-    this.lendListService.addLendList(this.lendList).subscribe((data: any) => {
+    this.toastService.loading('Adding, Please wait', {
+      id: 'adding'
+    })
+    this.lendListService.addLendList(this.lendList).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('adding');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe((data: any) => {
+      this.toastService.close('adding');
       this.lendList = new LendList();
       this.modalService.dismissAll();
       this.ngOnInit();
+      this.toastService.success('Added');
     })
   }
 

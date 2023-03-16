@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { HotToastService } from '@ngneat/hot-toast';
+import { tap } from 'rxjs';
 import { BorrowerInformation, LendList, Status } from 'src/app/class/lend-tracker/lend-list';
 import { LendListService } from 'src/app/services/lend-tracker/lend-list.service';
 
@@ -24,6 +27,7 @@ export class LendListComponent implements OnInit {
   constructor(private lendListService: LendListService,
     modalConfig: NgbModalConfig,
     private modalService: NgbModal,
+    private toastService: HotToastService
   )
   {
     modalConfig.backdrop = 'static';
@@ -37,9 +41,21 @@ export class LendListComponent implements OnInit {
   }
 
   private getLendList(){
-    this.lendListService.getLendList().subscribe((data: LendList[]) => {
+    this.toastService.loading('Loading, Please wait', {
+      id: 'loading'
+    })
+    this.lendListService.getLendList().pipe(
+      tap({
+        error: (error: HttpErrorResponse|Error) => {
+          this.toastService.error('Error occurred : ' + error.name);
+          this.toastService.close('loading');
+        } 
+      })
+    ).subscribe((data: LendList[]) => {
       this.lendList = data;
+      this.toastService.close('loading');
     });
+    
   }
 
   private getStatusList(){
@@ -100,10 +116,22 @@ export class LendListComponent implements OnInit {
   }
 
   updateLendList(){
-    this.lendListService.updateLendList(this.lend).subscribe((data: any) => {
+    this.toastService.loading('Updating, Please wait', {
+      id: 'updating'
+    })
+    this.lendListService.updateLendList(this.lend).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('updating');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe((data: any) => {
       this.lend = new LendList();
       this.modalService.dismissAll();
+      this.toastService.close('updating');
       this.ngOnInit();
+      this.toastService.success('Updated');
     })
   }
 
@@ -117,9 +145,21 @@ export class LendListComponent implements OnInit {
   }
 
   deleteLend(lend:any){
-    this.lendListService.deleteLend(lend.lendListsId).subscribe((data: any) =>{
+    this.toastService.loading('Deleting, Please wait', {
+      id: 'deleting'
+    })
+    this.lendListService.deleteLend(lend.lendListsId).pipe(
+      tap({
+        error: (error:HttpErrorResponse|Error) => {
+          this.toastService.close('deleting');
+          this.toastService.error('Error occurred : ' + error.name);
+        }
+      })
+    ).subscribe((data: any) =>{
+      this.toastService.close('deleting');
       this.ngOnInit();
       this.modalService.dismissAll();
+      this.toastService.success('Deleted');
     })
   }
 
