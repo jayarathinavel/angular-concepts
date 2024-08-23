@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { RequestInterceptor } from './login/request.interceptor';
 import { LendListComponent } from './lend-tracker/lend-list/lend-list.component';
 import { WriteLendComponent } from './lend-tracker/write-lend/write-lend.component';
+import { NotesComponent } from './notes/notes.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { WriteLendComponent } from './lend-tracker/write-lend/write-lend.compone
     HomeComponent,
     LoginComponent,
     LendListComponent,
-    WriteLendComponent
+    WriteLendComponent,
+    NotesComponent
   ],
   imports: [
     BrowserModule,

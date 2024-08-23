@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-end p-3">
+  <button (click)="openAddNoteModal(noteDialog)" class="btn btn-success btn-lg icon-button"><i class="bi bi-pencil-square"></i></button>
+</div>
+<div class="notes-container">
+  <div class="note" *ngFor="let item of allNotes" (click)="openModal(item, noteDialog)"
+       style="background-color:{{item.backgroundColor}};"
+       [style.color]="getForegroundColor(item.backgroundColor)">{{ item.note }}</div>
+</div>
+<ng-template #noteDialog let-c="close" let-d="dismiss">
+  <div class="modal-container" style="background-color: {{note.backgroundColor}}">
+    <div class="modal-header border-0">
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+    <div class="modal-body">
+      <div [style.color]="getForegroundColor(note.backgroundColor)" contenteditable="true" [(ngModel)]="note.note"
+           (input)="onInputChange($event)" name="note-text" ngDefaultControl>{{note.note}}</div>
+    </div>
+    <div class="note-dialog-menus-bottom" [style.color]="getForegroundColor(note.backgroundColor)">
+      <div class="color-picker">
+        <i class="bi bi-palette-fill" (click)="toggleColorBox()"></i>
+        <div class="color-box" *ngIf="isColorBoxOpen">
+          <div class="color" *ngFor="let color of backgroundColors" [style.background-color]="color"
+               (click)="selectColor(color)"></div>
+        </div>
+      </div>
+      <div class="delete-button">
+        <i class="bi bi-trash3-fill" (click)="deleteNote(note.noteId)"></i>
+      </div>
+    </div>
+  </div>
+</ng-template>
