@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { tap } from 'rxjs';
-import { BorrowerInformation, LendList, Status } from 'src/app/class/lend-tracker/lend-list';
-import { LendListService } from 'src/app/services/lend-tracker/lend-list.service';
+import { BorrowerInformation, LendList, Status } from 'src/app/lend-tracker/model/lend-list';
+import { LendListService } from 'src/app/lend-tracker/service/lend-list.service';
 
 @Component({
   selector: 'app-lend-list',

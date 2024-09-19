@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BorrowerInformation, LendList, Status } from 'src/app/class/lend-tracker/lend-list';
+import { BorrowerInformation, LendList, Status } from 'src/app/lend-tracker/model/lend-list';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BorrowerInformation, LendList } from 'src/app/class/lend-tracker/lend-list';
-import { LendListService } from 'src/app/services/lend-tracker/lend-list.service';
+import { BorrowerInformation, LendList } from 'src/app/lend-tracker/model/lend-list';
+import { LendListService } from 'src/app/lend-tracker/service/lend-list.service';
 import { LendListComponent } from '../lend-list/lend-list.component';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';

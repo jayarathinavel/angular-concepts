@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AddressBook, AddressDetails, ContactDetails } from '../class/address-book/address-book';
-import { AddressBookService } from '../services/address-book/address-book.service';
+import { AddressBook, AddressDetails, ContactDetails } from './model/address-book';
+import { AddressBookService } from './service/address-book.service';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { tap } from 'rxjs';
