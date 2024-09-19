@@ -14,8 +14,7 @@ export class TableComponent implements OnInit {
   
   @Input() data: any[] = [];
   @Input() columns: string[] = [];
-  @Input() tableName: string = '';  // New input for table name
-
+  @Input() tableName: string = '';
   searchTerm: string = '';
   sortColumn: string = '';
   sortDirection: boolean = true;

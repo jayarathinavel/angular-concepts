@@ -1,3 +1,5 @@
+<ng-content select="[customConentOnTopOfTable]"></ng-content>
+
 <h3 *ngIf="tableName">{{ tableName }}</h3>
 <input type="text" class="form-control mb-3" placeholder="Search..." [(ngModel)]="searchTerm" />
 <div class="table-responsive">

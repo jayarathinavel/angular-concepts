@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Datatable } from './datatable';
 
 @Component({
   selector: 'app-datatable',
@@ -12,28 +13,28 @@ export class DatatableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  columns = ['name', 'age', 'email'];
-
-  tables = [
-    {
-      name: 'User Information',
-      data: [
+  tables: Datatable[] = [
+    new Datatable(
+      'User Information',
+      ['name', 'age', 'email'],
+      [
         { name: 'John Doe', age: 25, email: 'john@example.com' },
         { name: 'Jane Smith', age: 30, email: 'jane@example.com' },
         { name: 'Jim Brown', age: 35, email: 'jim@example.com' }
       ]
-    },
-    {
-      name: 'Employee Information',
-      data: [
+    ),
+    new Datatable(
+      'Employee Information',
+      ['name', 'age', 'email'],
+      [
         { name: 'Alice Johnson', age: 28, email: 'alice@company.com' },
         { name: 'Bob Lee', age: 32, email: 'bob@company.com' },
         { name: 'Charlie Kim', age: 40, email: 'charlie@company.com' }
       ]
-    }
+    )
   ];
 
-  selectedTable = this.tables[0];
+  selectedTable: Datatable = this.tables[0];
 
   onTableChange(event: any) {
     const selectedTableName = event.target.value;

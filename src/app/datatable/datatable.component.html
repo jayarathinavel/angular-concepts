@@ -1,5 +1,10 @@
 <div class="container">
-    <div class="form-group">
+  <app-table 
+    [data]="selectedTable.data" 
+    [columns]="selectedTable.columns" 
+    [tableName]="selectedTable.name">
+
+    <div customConentOnTopOfTable class="form-group">
       <label for="tableSelect">Select Table:</label>
       <select id="tableSelect" [title]="selectedTable.name" class="form-control" (change)="onTableChange($event)">
         <option *ngFor="let table of tables" [value]="table.name" [title]="table.name">
@@ -7,11 +12,7 @@
         </option>
       </select>
     </div>
-  
-    <app-table 
-      [data]="selectedTable.data" 
-      [columns]="columns" 
-      [tableName]="selectedTable.name">
-    </app-table>
+
+  </app-table>
 </div>
   
