@@ -1,0 +1,18 @@
+<h3 *ngIf="tableName">{{ tableName }}</h3>
+<input type="text" class="form-control mb-3" placeholder="Search..." [(ngModel)]="searchTerm" />
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th *ngFor="let column of columns" (click)="sort(column)" style="cursor: pointer;">
+                    {{ column }} <span *ngIf="sortColumn === column">{{ sortDirection ? '▲' : '▼' }}</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data | filter: searchTerm">
+                <td *ngFor="let column of columns">{{ item[column] }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

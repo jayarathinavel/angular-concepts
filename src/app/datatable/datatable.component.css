@@ -1,0 +1,12 @@
+.container {
+    padding: 1rem;
+}
+
+.form-control {
+    max-width: 10rem;
+    margin: 1rem;
+}
+
+label {
+    font-weight: 700;
+}

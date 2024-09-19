@@ -6,6 +6,7 @@ import { LendListComponent } from './lend-tracker/lend-list/lend-list.component'
 import { AuthenticationGuard } from './login/authentication.guard';
 import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
+import { DatatableComponent } from './datatable/datatable.component';
 
 const routes: Routes = [
   {path:'address-book', component: AddressBookComponent, canActivate: [AuthenticationGuard]},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'login', component: LoginComponent},
   {path:'lend-tracker', component: LendListComponent, canActivate: [AuthenticationGuard]},
   {path:'notes', component: NotesComponent, canActivate: [AuthenticationGuard]},
+  {path:'datatable', component: DatatableComponent, canActivate: [AuthenticationGuard]},
 ];
 
 @NgModule({

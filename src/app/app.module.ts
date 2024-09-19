@@ -14,6 +14,9 @@ import { RequestInterceptor } from './login/request.interceptor';
 import { LendListComponent } from './lend-tracker/lend-list/lend-list.component';
 import { WriteLendComponent } from './lend-tracker/write-lend/write-lend.component';
 import { NotesComponent } from './notes/notes.component';
+import { TableComponent } from './utility-classes/table/table.component';
+import { DatatableComponent } from './datatable/datatable.component';
+import { FilterPipe } from './utility-classes/pipe/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { NotesComponent } from './notes/notes.component';
     LoginComponent,
     LendListComponent,
     WriteLendComponent,
-    NotesComponent
+    NotesComponent,
+    TableComponent,
+    DatatableComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
